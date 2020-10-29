@@ -1,0 +1,4 @@
+TRUNCATE
+    messages,
+    users
+RESTART IDENTITY CASCADE;
