@@ -6,24 +6,22 @@ function makeUsersArray() {
       {
         id: 1,
         username: 'facebook-team',
-        password: 'password'
+        password: bcrypt.hash('password', 12),
       },
       {
         id: 2,
         username: 'google',
-        password: 'password',
+        password: bcrypt.hash('password', 12),
       },
       {
         id: 3,
         username: 'microsoft',
-        password: 'password'
-        // password: bcrypt.hash('password', 12),
+        password: bcrypt.hash('password', 12),
       },
       {
         id: 4,
         username: 'twitter',
-        password: 'password'
-        // password: bcrypt.hash('password', 12),
+        password: bcrypt.hash('password', 12),
       },
     ]
   }
@@ -127,10 +125,13 @@ function makeUsersArray() {
       )
   }
 
-  function makeAuthHeader(user) {
-       const token = Buffer.from(`${user.username}:${user.password}`).toString('base64')
-       return `Basic ${token}`
-     }
+  function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+    const token = jwt.sign({ user_id: user.id }, secret, {
+         subject: user.username,
+         algorithm: 'HS256',
+       })
+    return `Bearer ${token}`
+  }
   
   module.exports = {
     makeUsersArray,

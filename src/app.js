@@ -5,6 +5,8 @@ const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const messageRouter = require('./messages/message-router')
+const authRouter = require('./auth/auth-router')
+const usersRouter = require('./auth/users-router')
 
 const app = express()
 
@@ -17,6 +19,8 @@ app.use(helmet())
 app.use(cors())
 
 app.use('/api/messages', messageRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/users', usersRouter)
 
 app.get('/', (req, res) => {
    res.send('Boilerplate!')

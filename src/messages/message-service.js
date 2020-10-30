@@ -1,7 +1,7 @@
 const MessageService = {
-    getAllMessages(knex) {
+    getAllMessages(knex, id) {
         return knex
-        .select('*').from('messages')
+        .select('*').from('messages').where('chat_id', id)
     },
     addMessage(knex, newMessage) {
         return knex

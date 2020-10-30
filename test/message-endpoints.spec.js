@@ -138,7 +138,7 @@ describe('Messages endpoints', function() {
         const testUser = testUsers[0]
         const newPost = {
             id: testMessage.id,
-            content: testMessage.content
+            content: 'content',
           }
         return supertest(app)
           .post('/api/messages')
@@ -148,7 +148,7 @@ describe('Messages endpoints', function() {
           .expect(res => {
             expect(res.body.content).to.eql(newPost.content)
             expect(res.body.id).to.eql(newPost.id)
-            expect(res.body.user.id).to.eql(testUser.id)
+            expect(res.body.user.id).to.eql(testUsers.id)
           })
           .expect(res => {
             db  
@@ -158,7 +158,7 @@ describe('Messages endpoints', function() {
               .first()
               .then(row => {
                 expect(row.content).to.eql(newPost.content)
-                expect(row.convo_id).to.eql(testUser.id)
+                expect(row.chat_id).to.eql(testUser.id)
               })
           })
       })

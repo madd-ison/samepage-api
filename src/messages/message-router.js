@@ -2,7 +2,7 @@ const express = require('express')
 const MessageService = require('./message-service')
 const xss = require('xss')
 const logger = require('../logger')
-const { requireAuth } = require('../middleware/basic-auth')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 
 const messageRouter = express.Router()
@@ -21,7 +21,7 @@ messageRouter
   .all(requireAuth)
   .get((req, res, next) => {
     const knexInstance = req.app.get('db')
-    MessageService.getAllMessages(knexInstance)
+    MessageService.getAllMessages(knexInstance, req.user.id)
         .then(messages => res.json(messages.map(serializeMessage)))
         .catch(next)
   })
@@ -34,7 +34,7 @@ messageRouter
       }
       const newMessage = {
         content: xss(req.body.content),
-        author: xss(req.body.author)
+        author: xss(req.body.author),
       }
       newMessage.chat_id = req.user.id
       MessageService.addMessage(req.app.get('db'), newMessage)
