@@ -3,7 +3,6 @@ require('dotenv').config()
 const app = require('./app')
 const { PORT, DATABASE_URL } = require('./config')
 const knex = require('knex')
-// const MessageService = require('./messages/message-service')
 
 const db = knex({
   client: 'pg',
