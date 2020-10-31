@@ -126,12 +126,6 @@ describe('Messages endpoints', function() {
                 .into('users')
                 .insert(testUsers)
           })
-    
-    //     beforeEach(() => {
-    //         return db
-    //             .into('messages')
-    //             .insert(testMessages)
-    //   })
       it(`creates a new post, responding with 201 and new post`, function() {
         this.retries(3)
         const testMessage = testMessages[0]
