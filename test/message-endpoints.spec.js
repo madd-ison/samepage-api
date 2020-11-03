@@ -177,4 +177,43 @@ describe('Messages endpoints', function() {
         })
       })
     })
+    describe(`DELETE /api/messages/:id`, () => {
+      context(`Given no messages`, () => {
+        it(`responds with 404`, () => {
+          const messageId = 123456
+          return supertest(app)
+            .delete(`/api/messages/${id}`)
+            .expect(404, { error: { message: `message doesn't exist` } })
+        })
+      })
+  
+      context('Given there are messages in the database', () => {
+        const testUsers = makeUsersArray()
+        const testMessages = makeMessagesArray()
+  
+        beforeEach('insert messages', () => {
+          return db
+            .into('users')
+            .insert(testUsers)
+            .then(() => {
+              return db
+                .into('messages')
+                .insert(testMessages)
+            })
+        })
+  
+        it('responds with 204 and removes the message', () => {
+          const idToRemove = 2
+          const expectedMessages = testMessages.filter(message => message.id !== idToRemove)
+          return supertest(app)
+            .delete(`/api/messages/${idToRemove}`)
+            .expect(204)
+            .then(res =>
+              supertest(app)
+                .get(`/api/articles`)
+                .expect(expectedMessages)
+            )
+        })
+      })
+    })
  })

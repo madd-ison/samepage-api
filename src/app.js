@@ -12,7 +12,7 @@ const app = express()
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
-  : 'common';
+  : 'common'
 
 app.use(morgan(morganOption))
 app.use(helmet())
